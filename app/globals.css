@@ -1,26 +1,220 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Quill Editor Overrides ─────────────────────── */
+.quill-wrapper .ql-toolbar.ql-snow {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+  border-color: #e2e8f0;
+  background: #f8fafc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.quill-wrapper .ql-container.ql-snow {
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  border-color: #e2e8f0;
+  font-family: "Inter", sans-serif;
+  font-size: 0.9375rem;
+  min-height: 150px;
+}
+
+.quill-wrapper .ql-editor {
+  min-height: 150px;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.quill-wrapper .ql-editor.ql-blank::before {
+  color: #94a3b8;
+  font-style: normal;
+}
+
+.quill-wrapper .ql-container.ql-snow:focus-within {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.quill-wrapper .ql-toolbar.ql-snow:has(+ .ql-container:focus-within) {
+  border-color: #6366f1;
+}
+
+/* ── Rich Content Display (Frontend) ────────────── */
+.rich-content {
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  color: #475569;
+
+  /* ═══ THE KEY FIXES FOR MOBILE ═══ */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ── Paragraphs ── */
+.rich-content p {
+  margin-bottom: 0.75em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
+  max-width: 100%;
+}
+
+.rich-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Empty paragraphs (spacers from Quill) */
+.rich-content p br {
+  content: "";
+  display: block;
+  margin-top: 0.25em;
+}
+
+/* ── Lists ── */
+.rich-content ul,
+.rich-content ol {
+  margin: 0.5em 0;
+  padding-left: 1.5em;
+  max-width: 100%;
+}
+
+.rich-content ul {
+  list-style-type: disc;
+}
+
+.rich-content ol {
+  list-style-type: decimal;
+}
+
+.rich-content li {
+  margin-bottom: 0.35em;
+  line-height: 1.7;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  padding-left: 0.25em;
+}
+
+/* ── Inline Formatting ── */
+.rich-content strong,
+.rich-content b {
+  font-weight: 700;
+  color: #334155;
+}
+
+.rich-content em,
+.rich-content i {
+  font-style: italic;
+}
+
+.rich-content u {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #94a3b8;
+}
+
+.rich-content s,
+.rich-content del,
+.rich-content strike {
+  text-decoration: line-through;
+  text-decoration-color: #94a3b8;
+}
+
+/* ── Links ── */
+.rich-content a {
+  color: #4f46e5;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: #a5b4fc;
+  word-break: break-all; /* Long URLs won't overflow on mobile */
+  transition: color 0.2s, text-decoration-color 0.2s;
+}
+
+.rich-content a:hover {
+  color: #4338ca;
+  text-decoration-color: #4338ca;
+}
+
+/* ── Headings ── */
+.rich-content h3 {
+  font-weight: 700;
+  font-size: 1.1em;
+  color: #1e293b;
+  margin-top: 1em;
+  margin-bottom: 0.35em;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.rich-content h4 {
+  font-weight: 700;
+  font-size: 1em;
+  color: #1e293b;
+  margin-top: 0.75em;
+  margin-bottom: 0.25em;
+  line-height: 1.4;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* ── Horizontal Rule ── */
+.rich-content hr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 1.25em 0;
+}
+
+/* ── Quill Indent Classes ── */
+.rich-content .ql-indent-1 { padding-left: 1.5em; }
+.rich-content .ql-indent-2 { padding-left: 3em; }
+.rich-content .ql-indent-3 { padding-left: 4.5em; }
+
+/* ── Quill Alignment Classes ── */
+.rich-content .ql-align-center { text-align: center; }
+.rich-content .ql-align-right { text-align: right; }
+.rich-content .ql-align-justify { text-align: justify; }
+
+/* ── Mobile Responsive Overrides ── */
+@media (max-width: 640px) {
+  .rich-content {
+    font-size: 0.875rem;
+    line-height: 1.75;
   }
-}
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  .rich-content p {
+    margin-bottom: 0.6em;
+  }
+
+  .rich-content ul,
+  .rich-content ol {
+    padding-left: 1.25em;
+  }
+
+  .rich-content li {
+    margin-bottom: 0.3em;
+    padding-left: 0.15em;
+  }
+
+  .rich-content h3 {
+    font-size: 1.05em;
+  }
+
+  .rich-content h4 {
+    font-size: 0.95em;
+  }
+
+  /* Reduce indentation on small screens */
+  .rich-content .ql-indent-1 { padding-left: 1em; }
+  .rich-content .ql-indent-2 { padding-left: 2em; }
+  .rich-content .ql-indent-3 { padding-left: 3em; }
 }
