@@ -178,8 +178,8 @@ const HomeComponent: React.FC<HomeProps> = ({ data }) => {
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-600 rounded-full text-xs font-bold uppercase tracking-widest mb-6">
                 <User size={14} /> My Story
               </div>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold text-slate-900 mb-6 md:mb-8">Crafting Digital Excellence</h2>
-              <div className="space-y-6 text-slate-600 text-base md:text-lg leading-relaxed">
+              <h2 className="font-serif text-3xl md:text-4xl font-bold text-slate-900 mb-6 md:mb-8">Passion for Technology, Commitment to Excellence</h2>
+              <div className="space-y-6 text-slate-600 text-balance md:text-lg leading-relaxed max-h-[70vh] overflow-y-auto pr-2">
                 <p>{data.about}</p>
               </div>
             </div>

@@ -97,7 +97,7 @@ const ProjectsBlogs: React.FC<Props> = ({ data }) => {
                     </div>
 
                     {/* Content */}
-                    <div className="md:w-3/5 p-6 md:p-8 flex flex-col min-w-0">
+                    <div className="md:w-3/5 p-6 md:p-8 min-w-0 max-h-[50vh] overflow-auto">
                       <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 mb-2">
                         {project.category}
                       </span>
