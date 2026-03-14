@@ -79,6 +79,30 @@ const Chatbot: React.FC<ChatbotProps> = ({ ownerName }) => {
 
       const result = await apiClient.chat(trimmed);
 
+      if (result.loading) {
+        // Show a temporary "warming up" message
+        const loadingMsg: ChatMessage = {
+          id: `bot-loading-${Date.now()}`,
+          role: "bot",
+          content: "Getting my brain ready... One moment please! ☕",
+          timestamp: new Date(),
+        };
+        setMessages((prev) => [...prev, loadingMsg]);
+        
+        setTimeout(async () => {
+          const retry = await apiClient.chat(trimmed);
+          const retryMsg: ChatMessage = {
+            id: `bot-retry-${Date.now()}`,
+            role: "bot",
+            content: retry.reply,
+            timestamp: new Date(),
+          };
+          setMessages((prev) => prev.filter(m => m.id !== loadingMsg.id).concat(retryMsg));
+          setIsTyping(false);
+        }, 15000); // reduced to 15s
+        return;
+      }
+
       const botMsg: ChatMessage = {
         id: `bot-${Date.now()}`,
         role: "bot",
@@ -88,22 +112,6 @@ const Chatbot: React.FC<ChatbotProps> = ({ ownerName }) => {
 
       setMessages((prev) => [...prev, botMsg]);
       setIsTyping(false);
-
-      // If model is loading (cold start), auto-retry after delay
-      if (result.loading) {
-        setTimeout(async () => {
-          setIsTyping(true);
-          const retry = await apiClient.chat(trimmed);
-          const retryMsg: ChatMessage = {
-            id: `bot-retry-${Date.now()}`,
-            role: "bot",
-            content: retry.reply,
-            timestamp: new Date(),
-          };
-          setMessages((prev) => [...prev, retryMsg]);
-          setIsTyping(false);
-        }, 25000);
-      }
     },
     [isTyping]
   );

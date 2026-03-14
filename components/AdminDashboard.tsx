@@ -393,10 +393,10 @@ const AdminDashboard: React.FC<AdminProps> = ({ data, onUpdate }) => {
             onClick={handleSave}
             disabled={saveStatus === "saving"}
             className={`flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-all shadow-lg justify-center sm:min-w-[200px] ${saveStatus === "success"
-                ? "bg-green-500 text-white"
-                : saveStatus === "error"
-                  ? "bg-red-500 text-white"
-                  : "bg-indigo-600 text-white hover:bg-indigo-700"
+              ? "bg-green-500 text-white"
+              : saveStatus === "error"
+                ? "bg-red-500 text-white"
+                : "bg-indigo-600 text-white hover:bg-indigo-700"
               }`}
           >
             {saveStatus === "saving" ? (
@@ -433,8 +433,8 @@ const AdminDashboard: React.FC<AdminProps> = ({ data, onUpdate }) => {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`whitespace-nowrap flex-shrink-0 lg:w-full text-left px-5 md:px-6 py-3 md:py-4 rounded-2xl font-bold transition-all flex items-center gap-3 ${activeTab === tab.id
-                  ? "bg-indigo-600 text-white shadow-xl lg:translate-x-2"
-                  : "text-slate-600 hover:bg-white"
+                ? "bg-indigo-600 text-white shadow-xl lg:translate-x-2"
+                : "text-slate-600 hover:bg-white"
                 }`}
             >
               {tab.icon} {tab.label}
@@ -596,8 +596,8 @@ const AdminDashboard: React.FC<AdminProps> = ({ data, onUpdate }) => {
                   <div className="flex flex-col sm:flex-row gap-4 pt-2">
                     <label
                       className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold cursor-pointer transition-all w-full sm:w-auto justify-center ${isUploadingResume
-                          ? "bg-slate-100 text-slate-400 cursor-not-allowed"
-                          : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/20"
+                        ? "bg-slate-100 text-slate-400 cursor-not-allowed"
+                        : "bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg shadow-emerald-600/20"
                         }`}
                     >
                       {isUploadingResume ? (
