@@ -89,6 +89,19 @@ const HomeComponent: React.FC<HomeProps> = ({ data }) => {
     }
   };
 
+  const getContactHref = (icon: ContactDetail["icon"], value: string) => {
+    switch (icon) {
+      case "mail":
+        return `mailto:${value}`;
+      case "phone":
+        return `tel:${value.replace(/\s+/g, "")}`;
+      case "map-pin":
+        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(value)}`;
+      default:
+        return "#";
+    }
+  };
+
   const experiences = data.experiences || [];
   const education = data.education || [];
   const skills = data.skills || [];
@@ -549,9 +562,14 @@ const HomeComponent: React.FC<HomeProps> = ({ data }) => {
                       </div>
                       <div className="overflow-hidden">
                         <p className="text-indigo-200 text-[11px] font-bold uppercase tracking-wider mb-0.5">{detail.label}</p>
-                        <span className="font-medium text-base md:text-lg">
+                        <a 
+                          href={getContactHref(detail.icon, detail.value)}
+                          target={detail.icon === "map-pin" ? "_blank" : undefined}
+                          rel={detail.icon === "map-pin" ? "noreferrer" : undefined}
+                          className="font-medium text-base md:text-lg hover:text-indigo-200 transition-colors block decoration-indigo-200/30 underline-offset-4 hover:underline"
+                        >
                           {detail.value}
-                        </span>
+                        </a>
                       </div>
                     </div>
                   ))}
