@@ -92,7 +92,7 @@ const Navbar: React.FC<NavbarProps> = ({ name, profileImageUrl, socials }) => {
                 pathname === "/projects" ? "text-indigo-600" : "text-slate-600 hover:text-indigo-600"
               }`}
             >
-              Projects
+              Projects & Blogs
             </Link>
           </div>
 
