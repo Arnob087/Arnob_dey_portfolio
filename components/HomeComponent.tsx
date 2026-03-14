@@ -188,15 +188,14 @@ const HomeComponent: React.FC<HomeProps> = ({ data }) => {
             {data.resumeUrl ? (
               <a
                 href={data.resumeUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full sm:w-auto px-8 py-4 rounded-full font-medium border border-slate-200 bg-white/50 backdrop-blur hover:bg-white transition-all flex items-center justify-center gap-2 group"
+                download={data.resumeFilename ? `${data.resumeFilename}.pdf` : "Resume.pdf"}
+                className="w-full sm:w-auto px-8 py-4 rounded-full font-medium border border-slate-200 bg-white/50 backdrop-blur hover:bg-white transition-all flex items-center justify-center gap-2 group shadow-md"
               >
                 <FileText size={20} className="text-indigo-600" />
-                View Resume
+                Download Resume
                 <Download
                   size={16}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity text-indigo-600"
+                  className="text-indigo-600 group-hover:translate-y-0.5 transition-transform"
                 />
               </a>
             ) : (

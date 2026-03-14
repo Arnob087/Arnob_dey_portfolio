@@ -69,17 +69,14 @@ export async function POST(request: NextRequest) {
       : `upload-${Date.now()}`;
 
     // ── Determine Cloudinary upload endpoint ──
-    let uploadUrl = cloudinaryUrl;
-    if (isPdf) {
-      uploadUrl = cloudinaryUrl.replace("/image/upload", "/raw/upload");
-    }
+    const uploadUrl = cloudinaryUrl;
 
     // ── Upload using FormData ──
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", uploadPreset);
     formData.append("public_id", customName);
-    formData.append("resource_type", isPdf ? "raw" : "image");
+    formData.append("resource_type", "image"); // Keep as "image" even for PDFs for transformations
 
     // This is the key: when someone downloads the file,
     // Cloudinary will use this as the download filename
@@ -106,12 +103,15 @@ export async function POST(request: NextRequest) {
 
     const result = await cloudinaryResponse.json();
 
-    // For PDFs, append fl_attachment to force download with the custom filename
+    // For PDFs (or images intended as resumes), append fl_attachment to force download with the custom filename
     let fileUrl = result.secure_url;
     if (isPdf && fileUrl) {
-      // Cloudinary raw URLs look like:
-      // https://res.cloudinary.com/cloud/raw/upload/v123/Arnob_Dey
-      // We insert fl_attachment:filename into the URL for download
+      // Ensure the delivery URL ends with .pdf so browsers/Cloudinary treat it correctly
+      if (!fileUrl.toLowerCase().endsWith(".pdf")) {
+        fileUrl += ".pdf";
+      }
+
+      // For image resource type, we use fl_attachment for download
       fileUrl = fileUrl.replace(
         "/upload/",
         `/upload/fl_attachment:${customName}/`

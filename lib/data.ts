@@ -20,6 +20,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
         email: parsed.email || INITIAL_DATA.email,
         profileImageUrl: parsed.profileImageUrl || "",
         resumeUrl: parsed.resumeUrl || "",
+        resumeFilename: parsed.resumeFilename || "",
         socials: {
           github: parsed.socials?.github || "",
           linkedin: parsed.socials?.linkedin || "",
