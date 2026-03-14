@@ -89,8 +89,8 @@ export function sanitizePortfolioData(data: unknown): PortfolioData | null {
     const sanitized: PortfolioData = {
       name: sanitizeString(d.name, 100),
       tagline: sanitizeString(d.tagline, 200),
-      heroSubtitle: sanitizeString(d.heroSubtitle, 500),
-      about: sanitizeString(d.about, 5000),
+      heroSubtitle: sanitizeHtmlContent(d.heroSubtitle, 2000),
+      about: sanitizeHtmlContent(d.about, 5000),
       email: sanitizeString(d.email, 320),
       profileImageUrl: sanitizeUrl(d.profileImageUrl),
       resumeUrl: sanitizeUrl(d.resumeUrl),
@@ -109,81 +109,81 @@ export function sanitizePortfolioData(data: unknown): PortfolioData | null {
       },
       projects: Array.isArray(d.projects)
         ? d.projects.slice(0, 50).map((p: Record<string, unknown>) => ({
-            id: sanitizeString(p.id, 50),
-            title: sanitizeString(p.title, 200),
-            description: sanitizeString(p.description, 2000),
-            imageUrl: sanitizeUrl(p.imageUrl),
-            link: sanitizeUrl(p.link),
-            videoUrl: sanitizeUrl(p.videoUrl),
-            category: ["web", "mobile", "ai"].includes(p.category as string)
-              ? (p.category as "web" | "mobile" | "ai")
-              : "web",
-            featured: Boolean(p.featured),
-          }))
+          id: sanitizeString(p.id, 50),
+          title: sanitizeString(p.title, 200),
+          description: sanitizeHtmlContent(p.description, 5000),
+          imageUrl: sanitizeUrl(p.imageUrl),
+          link: sanitizeUrl(p.link),
+          videoUrl: sanitizeUrl(p.videoUrl),
+          category: ["web", "mobile", "ai"].includes(p.category as string)
+            ? (p.category as "web" | "mobile" | "ai")
+            : "web",
+          featured: Boolean(p.featured),
+        }))
         : [],
       blogs: Array.isArray(d.blogs)
         ? d.blogs.slice(0, 50).map((b: Record<string, unknown>) => ({
-            id: sanitizeString(b.id, 50),
-            title: sanitizeString(b.title, 300),
-            excerpt: sanitizeHtmlContent(b.excerpt, 2000),
-            imageUrl: sanitizeUrl(b.imageUrl),
-            date: sanitizeString(b.date, 50),
-            link: sanitizeUrl(b.link),
-          }))
+          id: sanitizeString(b.id, 50),
+          title: sanitizeString(b.title, 300),
+          excerpt: sanitizeHtmlContent(b.excerpt, 2000),
+          imageUrl: sanitizeUrl(b.imageUrl),
+          date: sanitizeString(b.date, 50),
+          link: sanitizeUrl(b.link),
+        }))
         : [],
       experiences: Array.isArray(d.experiences)
         ? d.experiences.slice(0, 20).map((e: Record<string, unknown>) => ({
-            id: sanitizeString(e.id, 50),
-            role: sanitizeString(e.role, 200),
-            company: sanitizeString(e.company, 200),
-            duration: sanitizeString(e.duration, 100),
-            description: sanitizeHtmlContent(e.description, 5000),
-          }))
+          id: sanitizeString(e.id, 50),
+          role: sanitizeString(e.role, 200),
+          company: sanitizeString(e.company, 200),
+          duration: sanitizeString(e.duration, 100),
+          description: sanitizeHtmlContent(e.description, 5000),
+        }))
         : [],
       skills: Array.isArray(d.skills)
         ? d.skills.slice(0, 50).map((s: Record<string, unknown>) => ({
-            id: sanitizeString(s.id, 50),
-            name: sanitizeString(s.name, 100),
-            icon: sanitizeString(s.icon, 100),
-            docUrl: sanitizeUrl(s.docUrl),
-          }))
+          id: sanitizeString(s.id, 50),
+          name: sanitizeString(s.name, 100),
+          icon: sanitizeString(s.icon, 100),
+          docUrl: sanitizeUrl(s.docUrl),
+        }))
         : [],
       education: Array.isArray(d.education)
         ? d.education.slice(0, 10).map((e: Record<string, unknown>) => ({
-            id: sanitizeString(e.id, 50),
-            degree: sanitizeString(e.degree, 200),
-            school: sanitizeString(e.school, 200),
-            year: sanitizeString(e.year, 50),
-            achievements: Array.isArray(e.achievements)
-              ? e.achievements
-                  .slice(0, 20)
-                  .map((a: unknown) => sanitizeString(a, 500))
-              : [],
-          }))
+          id: sanitizeString(e.id, 50),
+          degree: sanitizeString(e.degree, 200),
+          school: sanitizeString(e.school, 200),
+          year: sanitizeString(e.year, 50),
+          achievements: Array.isArray(e.achievements)
+            ? e.achievements
+              .slice(0, 20)
+              .map((a: unknown) => sanitizeString(a, 500))
+            : [],
+        }))
         : [],
       certifications: Array.isArray(d.certifications)
         ? d.certifications
-            .slice(0, 30)
-            .map((c: Record<string, unknown>) => ({
-              id: sanitizeString(c.id, 50),
-              title: sanitizeString(c.title, 300),
-              issuer: sanitizeString(c.issuer, 200),
-              date: sanitizeString(c.date, 50),
-              imageUrl: sanitizeUrl(c.imageUrl),
-              link: sanitizeUrl(c.link),
-            }))
+          .slice(0, 30)
+          .map((c: Record<string, unknown>) => ({
+            id: sanitizeString(c.id, 50),
+            title: sanitizeString(c.title, 300),
+            issuer: sanitizeString(c.issuer, 200),
+            date: sanitizeString(c.date, 50),
+            imageUrl: sanitizeUrl(c.imageUrl),
+            link: sanitizeUrl(c.link),
+          }))
         : [],
       contactDetails: Array.isArray(d.contactDetails)
         ? d.contactDetails
-            .slice(0, 10)
-            .map((c: Record<string, unknown>) => ({
-              id: sanitizeString(c.id, 50),
-              icon: ["mail", "phone", "map-pin"].includes(c.icon as string)
-                ? (c.icon as "mail" | "phone" | "map-pin")
-                : "mail",
-              label: sanitizeString(c.label, 100),
-              value: sanitizeString(c.value, 500),
-            }))
+          .slice(0, 10)
+          .map((c: Record<string, unknown>) => ({
+            id: sanitizeString(c.id, 50),
+            icon: ["mail", "phone", "map-pin"].includes(c.icon as string)
+              ? (c.icon as "mail" | "phone" | "map-pin")
+              : "mail",
+            label: sanitizeString(c.label, 100),
+            value: sanitizeString(c.value, 500),
+          }))
         : [],
     };
 

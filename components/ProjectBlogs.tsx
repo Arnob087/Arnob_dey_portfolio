@@ -26,14 +26,14 @@ const getThumb = (url: string): string => {
 };
 
 const ProjectsBlogs: React.FC<Props> = ({ data }) => {
-  const [filter, setFilter]       = useState<"all" | "web" | "mobile" | "ai">("all");
+  const [filter, setFilter] = useState<"all" | "web" | "mobile" | "ai">("all");
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
 
-  const projects       = data.projects       || [];
-  const blogs          = data.blogs          || [];
+  const projects = data.projects || [];
+  const blogs = data.blogs || [];
   const certifications = data.certifications || [];
 
-  const filtered      = filter === "all" ? projects : projects.filter((p) => p.category === filter);
+  const filtered = filter === "all" ? projects : projects.filter((p) => p.category === filter);
   const projectVideos = projects.filter((p) => p.videoUrl);
 
   return (
@@ -59,11 +59,10 @@ const ProjectsBlogs: React.FC<Props> = ({ data }) => {
                 <button
                   key={cat}
                   onClick={() => setFilter(cat)}
-                  className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all ${
-                    filter === cat
+                  className={`px-4 md:px-5 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider transition-all ${filter === cat
                       ? "bg-indigo-600 text-white shadow-lg"
                       : "text-slate-500 hover:text-indigo-600"
-                  }`}
+                    }`}
                 >
                   {cat}
                 </button>

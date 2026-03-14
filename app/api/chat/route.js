@@ -63,7 +63,7 @@ YOUR RULES:
 
     // ── Try chat completions format first (works with Instruct models) ──
     let response = await fetch(
-      `https://router.huggingface.co/hf-inference/models/${model}/v1/chat/completions`,
+      `https://router.huggingface.co/v1/chat/completions`,
       {
         method: "POST",
         headers: {
@@ -122,29 +122,67 @@ YOUR RULES:
 
     if (!response.ok) {
       const errBody = await response.json().catch(() => ({}));
-      console.error("HF API error:", response.status, errBody);
+      console.error("HF API ERROR:", {
+        status: response.status,
+        model: model,
+        error: errBody
+      });
+      
+      // Fallback to a smaller, usually more available model if the main one fails with 4xx/5xx
+      if (model !== "HuggingFaceTB/SmolLM2-1.7B-Instruct") {
+        console.log("Attempting fallback to SmolLM2...");
+        response = await fetch(
+          `https://router.huggingface.co/v1/chat/completions`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${apiKey}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "HuggingFaceTB/SmolLM2-1.7B-Instruct",
+              messages: [
+                { role: "system", content: systemPrompt },
+                { role: "user", content: message },
+              ],
+              max_tokens: 250,
+            }),
+          }
+        );
+      }
+    }
+
+    if (!response.ok) {
       return NextResponse.json({
         success: false,
-        reply: "AI service is temporarily unavailable. Please try again later.",
+        reply: "AI service is currently under heavy load. Please try again in a few seconds!",
       });
     }
 
     const result = await response.json();
     let reply = "";
 
-    // Parse chat completions format
+    console.log("HF API Debug Result:", JSON.stringify(result).substring(0, 500));
+
+    // Handle different HF response formats
     if (result.choices && result.choices[0]?.message?.content) {
       reply = result.choices[0].message.content.trim();
-    }
-    // Parse text-generation format
-    else if (Array.isArray(result) && result[0]?.generated_text) {
+    } else if (Array.isArray(result) && result[0]?.generated_text) {
       reply = result[0].generated_text.trim();
     } else if (result?.generated_text) {
       reply = result.generated_text.trim();
+    } else if (typeof result === 'string') {
+      reply = result.trim();
+    }
+
+    // Clean up Instruct model output if it matches the fallbackPrompt format
+    if (reply.includes("[/INST]")) {
+      reply = reply.split("[/INST]").pop().trim();
     }
 
     if (!reply) {
-      reply = `I couldn't generate a clear answer. Try asking something else about ${data.name}'s work!`;
+      console.warn("HF API returned no content. Full result:", result);
+      reply = `I'm here to help! Could you please rephrase that so I can better assist you? I'm specifically trained to talk about ${data.name}'s professional background.`;
     }
 
     return NextResponse.json({ success: true, reply });
