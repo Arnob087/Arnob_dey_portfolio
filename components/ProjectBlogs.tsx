@@ -97,7 +97,7 @@ const ProjectsBlogs: React.FC<Props> = ({ data }) => {
                     </div>
 
                     {/* Content */}
-                    <div className="md:w-3/5 p-6 md:p-8 min-w-0 max-h-[50vh] overflow-auto">
+                    <div className="md:w-3/5 p-6 md:p-8 min-w-0">
                       <span className="text-[10px] uppercase font-bold tracking-widest text-indigo-600 mb-2">
                         {project.category}
                       </span>
@@ -106,7 +106,7 @@ const ProjectsBlogs: React.FC<Props> = ({ data }) => {
                       </h3>
 
                       {/* ✅ Project description — rich text from Quill */}
-                      <div className="flex-grow mb-4 min-w-0 overflow-hidden">
+                      <div className="flex-grow mb-4 min-w-0 max-h-[30vh] overflow-auto">
                         <RichContent
                           html={project.description}
                           className="text-slate-500 text-sm leading-relaxed"
